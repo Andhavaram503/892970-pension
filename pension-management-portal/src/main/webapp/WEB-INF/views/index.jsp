@@ -74,7 +74,7 @@ body {
 					<li class="nav-item"><a class="nav-link" data-toggle="modal"
 						data-target="#myModal">Get Pensioner</a></li>
 				</ul>
-				<button class="btn btn-outline-light" type="submit">Logout</button>
+				<button class="btn btn-outline-light" type="submit" onclick="window.location.href='/logout'">Logout</button>
 			</div>
 		</div>
 	</nav>
@@ -137,7 +137,7 @@ body {
 							</div>
 							<div class="form-group bg-transparent">
 								<f:label path="dateOfBirth">Date Of Birth</f:label>
-								<f:input path="dateOfBirth" class="form-control" />
+								<f:input path="dateOfBirth" class="form-control" placeholder="dd/mm/yyyy" />
 							</div>
 
 							<div class="form-group bg-transparent">

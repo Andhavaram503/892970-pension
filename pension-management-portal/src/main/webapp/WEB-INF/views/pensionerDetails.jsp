@@ -95,7 +95,7 @@ body {
 							</div>
 							<div class="form-group bg-transparent">
 								<f:label path="dateOfBirth">Date Of Birth</f:label>
-								<f:input path="dateOfBirth" class="form-control" />
+								<f:input path="dateOfBirth" class="form-control"  placeholder="dd/mm/yyyy"/>
 							</div>
 
 							<div class="form-group bg-transparent">

@@ -1,0 +1,1 @@
+create table user (user_name varchar2(255) not null, is_account_non_expired bit not null, is_account_non_locked bit not null, is_credentials_non_expired bit not null, is_enabled bit not null, password varchar2(255) not null, roles varchar2(255), primary key (user_name))

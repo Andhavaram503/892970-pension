@@ -1,0 +1,27 @@
+version: 0.2
+phases:
+  install:
+    commands: echo "Install phase is getting executed"
+  pre_build:
+    commands:
+      - echo "Entered the pre-build phase"
+      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 516406820790.dkr.ecr.ap-northeast-1.amazonaws.com
+  build:
+    commands:
+      - echo "Entered build phase"
+      - echo "Building Java"
+      - cd pension-management-portal
+      - mvn compile
+      - mvn package
+      - echo " building docker image"
+      - docker build -t pension-portal .
+      - docker tag pension-portal:latest 516406820790.dkr.ecr.ap-northeast-1.amazonaws.com/pension-portal:latest
+  post_build:
+    commands:
+      - echo "Entered the post-build phase"
+      - echo "Pushing Docker Image"
+      - docker push 516406820790.dkr.ecr.ap-northeast-1.amazonaws.com/pension-portal:latest
+      - echo writing deifinition file
+      - printf '[{"name":"pension-portal-container","imageUri":"%s"}]' 516406820790.dkr.ecr.ap-northeast-1.amazonaws.com/pension-portal:latest>taskdefinition.json
+artifacts:
+  files: pension-portal/taskdefinition.json

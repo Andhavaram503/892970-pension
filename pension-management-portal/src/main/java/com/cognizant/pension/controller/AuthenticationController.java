@@ -23,6 +23,10 @@ public class AuthenticationController {
 	@Autowired
 	private AuthenticationClient authenticationClient;
 
+	@GetMapping("/check")
+	public String check() {
+		return "check";
+	}
 	@GetMapping("/login")
 	public String showLogin(Model model,HttpServletRequest req) {
 		HttpSession session=req.getSession();

@@ -1,4 +1,5 @@
 package com.cognizant.authorization.service;
+//import java.util.logging.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class MyUserDetailsService implements UserDetailsServices {
+	//Logger log=Logger.getLogger(MyUserDetailsService.class.getName());
 
 	@Autowired
 	private UserRepository userRepository; 

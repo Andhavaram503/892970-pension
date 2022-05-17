@@ -3,12 +3,12 @@ package com.cognizant.pension.model;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-@Data
+@AllArgsConstructor
 public class PensionerDetails {
 	
 	private String name;

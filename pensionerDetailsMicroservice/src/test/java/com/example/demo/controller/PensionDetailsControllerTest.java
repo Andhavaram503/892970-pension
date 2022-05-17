@@ -25,4 +25,11 @@ class PensionDetailsControllerTest {
 	void getPensionDetailsTest2() throws Exception {
 		mockMvc.perform(get("/details/12345620")).andExpect(status().isOk());
 	}
+	
+	@Test
+	void getPensionersTest() throws Exception {
+		mockMvc.perform(get("/pensions")).andExpect(status().isOk());
+	}
+	
+//	/pensions
 }

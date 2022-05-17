@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <p>Digital Clock:</p>
+
+    <p id="demo"></p>
+
+    <hr>
+    <p>Stop Watch:</p>
+
+
+    <div>
+        <button onclick="myStopFunction()">Stop time</button>
+        <button onclick="myResumeFunction()">Resume</button>
+        <button onclick="myResetFunction()">Reset</button>
+
+        <p id="demo1"></p>
+    </div>
+    <script>
+        var d = 0; h = 0, m = 0, s = 0;
+        var stopWatch = setInterval(watch, 1000);
+        function myStopFunction() {
+            clearInterval(stopWatch);
+        }
+        function myResumeFunction() {
+            stopWatch = setInterval(watch, 1000);
+        }
+        function myResetFunction() {
+            d = h = m = s = 0;
+            stopWatch = setInterval(watch, 1000);
+        }
+        function watch() {
+            if (s < 59) {
+                s++;
+            } else {
+                s = 0;
+                if (m < 59) {
+                    m++;
+                } else {
+                    m = 0;
+                    if (h < 2) {
+                        h++;
+                    } else {
+                        h = 0;
+                        d++;
+                    }
+                }
+            }
+            setTimeout(() => {
+                document.getElementById("demo1").innerHTML = "";
+            }, 500);
+            document.getElementById("demo1").innerHTML = d + ":" + h + ":" + m + ":" + s;
+        }
+        displayTime();
+        setInterval(displayTime, 1000);
+        function displayTime() {
+            var present = new Date();
+            var date = present.getDate();
+            var month = present.getMonth() + 1;
+            var year = present.getFullYear();
+            var hour = present.getHours();
+            var minute = present.getMinutes();
+            var seconds = present.getSeconds();
+            var extension = "AM";
+            if (hour > 12) {
+                extension = "PM";
+                hours = hours - 12;
+            }
+            if (hour == 0) {
+                extension = "PM";
+                hour = 12;
+            }
+            date = formatter(date);
+            month = formatter(month);
+            year = formatter(year);
+            hour = formatter(hour);
+            minute = formatter(minute);
+            seconds = formatter(seconds);
+            document.getElementById("demo").innerHTML = date + ":" + (month) + ":" + year + "    " + hour + ":" + minute + ":" + seconds + " " + extension;
+        }
+        function formatter(data) {
+            return data < 10 ? "0" + data : data;
+        }
+    </script>
+
+</body>
+
+</html>

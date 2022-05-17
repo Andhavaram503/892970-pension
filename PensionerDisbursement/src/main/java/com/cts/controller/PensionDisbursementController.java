@@ -14,20 +14,25 @@ import com.cts.model.ProcessPensionInput;
 import com.cts.model.ProcessPensionResponse;
 import com.cts.service.PensionerDisbursementServiceInterface;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class PensionDisbursementController {
-	
+
 	@Autowired
 	private PensionerDetailClient pdc;
 	@Autowired
 	private PensionerDisbursementServiceInterface pdsi;
-	
+
 	@PostMapping("/DisbursePension")
-	public ProcessPensionResponse getResponse(@RequestBody ProcessPensionInput processPensionInput) throws NumberFormatException, IOException, ParseException, AadharNotFoundException {
-		System.out.println(processPensionInput);
-		return pdsi.getResponse(pdc.getDetails(processPensionInput.getAadharNumber()).getBank(),processPensionInput.getBankType());
-	
-		
+	public ProcessPensionResponse getResponse(@RequestBody ProcessPensionInput processPensionInput)
+			throws NumberFormatException, IOException, ParseException, AadharNotFoundException {
+		log.info("Pension Disbursment process starts here");
+		log.info("Pension Disbursment process Ends here");
+		return pdsi.getResponse(pdc.getDetails(processPensionInput.getAadharNumber()).getBank(),
+				processPensionInput.getBankType());
+
 	}
 
 }

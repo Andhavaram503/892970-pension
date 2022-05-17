@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class AuthorizationServiceApplicationTests {
 
+
 	@Mock
 	private MyUserDetailsService myUserDetailsService;
 
@@ -54,15 +55,15 @@ class AuthorizationServiceApplicationTests {
 	@Order(1)
 	void loadByUserNameMethodTest() {
 		User user = new User();
-		user.setUserName("srikanth");
-		user.setPassword("srikanth7977");
+		user.setUserName("kranthi");
+		user.setPassword("kranthi");
 		log.info("creating user in ---> loadByUserNameMethodTest");
 		UserDetails userDetails = new UserPrincipal(user);
 		log.info("creating userDetails in ---> loadByUserNameMethodTest ");
-		when(myUserDetailsService.loadUserByUsername("srikanth")).thenReturn(userDetails);
+		when(myUserDetailsService.loadUserByUsername("kranthi")).thenReturn(userDetails);
 		assertNotNull(userDetails);
 		log.info("Testing  userDetails object is not null in ---> loadByUserNameMethodTest ");
-		assertEquals("srikanth", myUserDetailsService.loadUserByUsername("srikanth").getUsername());
+		assertEquals("kranthi", myUserDetailsService.loadUserByUsername("kranthi").getUsername());
 		log.info("End of Testing userDetails by userName in ---> loadByUserNameMethodTest ");
 
 	}
@@ -72,9 +73,9 @@ class AuthorizationServiceApplicationTests {
 	@Order(2)
 	void loadByUserNameMethodForInavlidUserTest() {
 		log.info("Testing the method with Exception in ---> loadByUserNameMethodForInavlidUserTest");
-		when(myUserDetailsService.loadUserByUsername("shivaji"))
+		when(myUserDetailsService.loadUserByUsername("kranthi"))
 				.thenThrow(new UsernameNotFoundException("User not found"));
-		UsernameNotFoundException exception=assertThrows(UsernameNotFoundException.class, () -> {myUserDetailsService.loadUserByUsername("shivaji");});
+		UsernameNotFoundException exception=assertThrows(UsernameNotFoundException.class, () -> {myUserDetailsService.loadUserByUsername("kranthi");});
 		String message = exception.getMessage();
 		
 		assertEquals("User not found", message);
@@ -90,8 +91,8 @@ class AuthorizationServiceApplicationTests {
 	void addingNewUserToDBTest() throws UserExistsWithTheGivenCredentialsException {
 		log.info("starting to add new user to db with passsword encryption --->addingNewUserToDBTest");
 		User user = new User();
-		user.setUserName("shivaji");
-		user.setPassword("shivaji");
+		user.setUserName("kranthi");
+		user.setPassword("kranthi");
 		log.info("creating a new user to add to db in ---> addingNewUserToDBTest");
 		when(myUserDetailsService.addUser(user)).thenReturn("Registration Successfull!!!");
 		assertEquals("Registration Successfull!!!", myUserDetailsService.addUser(user));
@@ -104,8 +105,8 @@ class AuthorizationServiceApplicationTests {
 	void addingExistingUserToDBTest() throws UserExistsWithTheGivenCredentialsException {
 		log.info("starting to add new user to db --->addingExistingUserToDBTest");
 		User user = new User();
-		user.setUserName("shivaji");
-		user.setPassword("shivaji");
+		user.setUserName("kranthi");
+		user.setPassword("kranthi");
 		log.info("creating a new user to add to db in ---> addingExistingUserToDBTest");
 		when(myUserDetailsService.addUser(user)).thenThrow(new UserExistsWithTheGivenCredentialsException("User Exists please provide new Credentials !!!"));
 		
@@ -128,7 +129,7 @@ class AuthorizationServiceApplicationTests {
 	// @WithUserDetails("srikanth")
 	void createAuthenticationTokenTest() throws Exception {
 		log.info("Testing -token generation functionality ----> createAuthenticationTokenTest");
-		AuthenticationRequest authenticationRequest = new AuthenticationRequest("srikanth", "srikanth7977");
+		AuthenticationRequest authenticationRequest = new AuthenticationRequest("kranthi", "kranthi");
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		String json = objectMapper.writeValueAsString(authenticationRequest);
@@ -144,7 +145,7 @@ class AuthorizationServiceApplicationTests {
 	@Order(6)
 	void validateAuthenticationTokenTest() throws Exception {
 		log.info("Testing -token generation functionality ----> createAuthenticationTokenTest");
-		AuthenticationRequest authenticationRequest = new AuthenticationRequest("srikanth", "srikanth7977");
+		AuthenticationRequest authenticationRequest = new AuthenticationRequest("kranthi", "kranthi");
 		ObjectMapper objectMapper = new ObjectMapper();
 		String json = objectMapper.writeValueAsString(authenticationRequest);
 		log.info("creating json out of java object {}", json);	
@@ -154,6 +155,7 @@ class AuthorizationServiceApplicationTests {
 		assertNotNull(response);
 		
 		String content=response.getContentAsString();
+		System.err.println(content);
 		content=content.substring(8, content.length()-2);
 		//System.err.println("response   "+ content.substring(8, content.length()-2));		
 		log.info("jwt Response {}", content);
@@ -248,5 +250,6 @@ class AuthorizationServiceApplicationTests {
 		log.info("End of New User Registration ----> UserRegistrationTest");
 
 	}
+
 
 }

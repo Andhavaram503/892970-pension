@@ -1,12 +1,9 @@
 package com.cts.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
+import lombok.Getter;
+@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class PensionerDetails {
 	private String name;
 	private String dateOfBirth;

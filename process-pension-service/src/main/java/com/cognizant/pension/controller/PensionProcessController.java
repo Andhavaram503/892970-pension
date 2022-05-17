@@ -1,7 +1,6 @@
 package com.cognizant.pension.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +14,10 @@ import com.cognizant.pension.model.ProcessPensionInput;
 import com.cognizant.pension.model.ProcessPensionResponse;
 import com.cognizant.pension.service.PensionProcessService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 public class PensionProcessController {
 	
 	@Autowired
@@ -27,13 +29,17 @@ public class PensionProcessController {
 	@Autowired
 	private PensionProcessService pensionProcessService; 
 	
+
+	private static final int PENSION_DISBURSEMENT_SUCCESS=10; 
 	
+	private static final int PENSION_DISBURSEMENT_FAILURE=21;
 	
 	@PostMapping("/PensionDetail")
-	//@ModelAttribute("") PensionerInput should be model attribute
 	public PensionDetail getPensionDetails(@RequestBody PensionerInput pensionerInput) throws Exception
 	{
-		PensionerDetails pensionerDetail = pensionerDetailsClient.getDetails(pensionerInput.getAadhar());		
+		log.info("inside getPensionDetails method");
+		PensionerDetails pensionerDetail = pensionerDetailsClient.getDetails(pensionerInput.getAadhar());	
+		log.info("inside getPensionDetails method {} --> ",pensionerDetail);
 		return pensionProcessService.getPensionDetails(pensionerDetail, pensionerInput);
 		
 	}
@@ -41,22 +47,25 @@ public class PensionProcessController {
 	@PostMapping("/process-pension")
 	public ProcessPensionResponse getProcessPension(@RequestBody ProcessPensionInput processPensionInput) throws Exception 
 	{
-		
-		//PensionerDetails pensionerDetails = pensionerDetailsClient.getDetails(processPensionInput.getAadharNumber());
-		
-		ProcessPensionResponse  processPensionResponse = pensionDisbursementClient.getResponse(processPensionInput);
-		
-		/*
-		 * if(processPensionResponse.getStatus_code() == PENSION_DISBURSEMENT_SUCCESS) {
-		 * return PENSION_DISBURSEMENT_SUCCESS; }
-		 * 
-		 * String bankType = pensionerDetails.getBank().getBankType();
-		 * 
-		 * return PENSION_DISBURSEMENT_FAILURE;
-		 * 
-		 */
-		return pensionProcessService.getProcessPension(pensionDisbursementClient, processPensionResponse, processPensionInput);
-		
+				log.info("inside getProcessPension method ");
+				ProcessPensionResponse  processPensionResponse = pensionDisbursementClient.getResponse(processPensionInput);
+				log.info("Recieved processPensionResponse from pensionDisbursementClient ");
+				if(processPensionResponse.getStatus_code() == PENSION_DISBURSEMENT_FAILURE)
+				{
+					log.info("inside getProcesspension....... PENSION_DISBURSEMENT_FAILURE coming");
+					for(int i=0;i<3;i++)
+					{
+						log.info("inside getProcesspension....... PENSION_DISBURSEMENT_FAILURE coming hitting service {}",i);
+						processPensionResponse = pensionDisbursementClient.getResponse(processPensionInput);
+						if(processPensionResponse.getStatus_code() == PENSION_DISBURSEMENT_SUCCESS)
+						{
+							log.info("inside getProcesspension....... PENSION_DISBURSEMENT_SUCCESS coming hitting service {}",i);
+							return processPensionResponse;
+						}
+					}
+				}
+				log.info("inside getProcesspension....... returning response");
+				return processPensionResponse;
 		
 	}
 		
